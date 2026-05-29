@@ -31,6 +31,7 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -95,7 +96,6 @@ fun EmployeeListScreen(
     var showFilterSheet by remember { mutableStateOf(false) }
     var showSortSheet   by remember { mutableStateOf(false) }
     var deleteTarget    by remember { mutableStateOf<Employee?>(null) }
-    var isSearchActive  by remember { mutableStateOf(false) }
 
     // Undo snackbar
     LaunchedEffect(undoEvent) {
@@ -182,21 +182,23 @@ fun EmployeeListScreen(
         Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
 
             // Search bar
-            SearchBar(
+            DockedSearchBar(
                 inputField = {
                     SearchBarDefaults.InputField(
                         query = searchQuery,
                         onQueryChange = viewModel::updateSearchQuery,
-                        onSearch = { isSearchActive = false },
-                        expanded = isSearchActive,
-                        onExpandedChange = { isSearchActive = it },
+                        onSearch = { /* dismiss keyboard */ },
+                        expanded = false,           // always false — no overlay
+                        onExpandedChange = {},      // ignore expand requests
                         placeholder = { Text("Search name, email, department…") },
                         leadingIcon = { Icon(Icons.Default.Search, null) }
                     )
                 },
-                expanded = isSearchActive,
-                onExpandedChange = { isSearchActive = it },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                expanded = false,                   // never expand
+                onExpandedChange = {},              // ignore
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 content = {}
             )
 
