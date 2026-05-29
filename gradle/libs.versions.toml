@@ -1,0 +1,90 @@
+[versions]
+# ── Core ──────────────────────────────────────────────────────────────────────
+kotlin               = "2.1.0"
+agp                  = "8.7.3"
+# Compose Multiplatform — bundles lifecycle-viewmodel + navigation for all targets
+composeMultiplatform = "1.7.3"
+
+# ── Android-only AndroidX ─────────────────────────────────────────────────────
+# These are used ONLY in androidMain — NOT in commonMain
+# so iOS never tries to resolve them
+androidxCore         = "1.15.0"
+androidxActivity     = "1.9.3"
+
+# lifecycle-viewmodel (NOT lifecycle-viewmodel-compose) has KMP artifacts
+# Use the compose-mp bundled versions via compose.* accessors instead
+androidxLifecycle    = "2.8.7"
+
+# ── Room KMP — 2.7.0 first stable KMP release ────────────────────────────────
+room                 = "2.7.0"
+sqlite               = "2.5.0"
+
+# ── KSP — must match kotlin exactly ──────────────────────────────────────────
+ksp                  = "2.1.0-1.0.29"
+
+# ── Koin ──────────────────────────────────────────────────────────────────────
+koin                 = "4.0.2"
+koinCompose          = "4.0.2"
+
+# ── Kotlinx ───────────────────────────────────────────────────────────────────
+coroutines           = "1.9.0"
+serializationJson    = "1.7.3"
+datetime             = "0.6.1"
+
+# ── DataStore KMP ─────────────────────────────────────────────────────────────
+datastore            = "1.1.2"
+
+# ── Coil 3 — fully KMP native ─────────────────────────────────────────────────
+coil                 = "3.0.4"
+
+# ── Android SDK ───────────────────────────────────────────────────────────────
+compileSdk           = "35"
+minSdk               = "26"
+targetSdk            = "35"
+
+[libraries]
+# ── Android-only (androidMain only) ──────────────────────────────────────────
+androidx-core-ktx         = { group = "androidx.core",     name = "core-ktx",        version.ref = "androidxCore" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+
+# ── lifecycle-viewmodel — HAS a KMP artifact (used in commonMain) ─────────────
+# NOTE: lifecycle-viewmodel-compose does NOT have iOS artifact — avoid it
+# NOTE: lifecycle-runtime-compose does NOT have iOS artifact — avoid it
+# Use compose.lifecycle.viewModelCompose accessor (bundled in CMP 1.7+) instead
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidxLifecycle" }
+
+# ── Room KMP ──────────────────────────────────────────────────────────────────
+androidx-room-runtime  = { group = "androidx.room",   name = "room-runtime",   version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room",   name = "room-compiler",  version.ref = "room" }
+androidx-sqlite-bundled= { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
+
+# ── Koin ──────────────────────────────────────────────────────────────────────
+koin-core              = { group = "io.insert-koin", name = "koin-core",              version.ref = "koin" }
+koin-android           = { group = "io.insert-koin", name = "koin-android",           version.ref = "koin" }
+koin-compose           = { group = "io.insert-koin", name = "koin-compose",           version.ref = "koinCompose" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koinCompose" }
+
+# ── Kotlinx ───────────────────────────────────────────────────────────────────
+kotlinx-coroutines-core    = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core",    version.ref = "coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serializationJson" }
+kotlinx-datetime           = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",           version.ref = "datetime" }
+
+# ── DataStore KMP (has proper multiplatform artifact) ─────────────────────────
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
+
+# ── Coil 3 KMP ────────────────────────────────────────────────────────────────
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+
+# ── Navigation Compose — JetBrains KMP version (ships iOS + Android artifacts) ─
+# DO NOT use androidx.navigation:navigation-compose — it has no iOS artifact
+navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.8.0-alpha10" }
+
+[plugins]
+androidApplication   = { id = "com.android.application",                  version.ref = "agp" }
+kotlinMultiplatform  = { id = "org.jetbrains.kotlin.multiplatform",        version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose",                     version.ref = "composeMultiplatform" }
+composeCompiler      = { id = "org.jetbrains.kotlin.plugin.compose",       version.ref = "kotlin" }
+ksp                  = { id = "com.google.devtools.ksp",                   version.ref = "ksp" }
+room                 = { id = "androidx.room",                             version.ref = "room" }
+kotlinSerialization  = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
